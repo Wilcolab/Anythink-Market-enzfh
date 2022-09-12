@@ -40,7 +40,6 @@ router.get("/", auth.optional, function(req, res, next) {
   var query = {};
   var limit = 100;
   var offset = 0;
-
   if (typeof req.query.limit !== "undefined") {
     limit = req.query.limit;
   }
@@ -52,7 +51,11 @@ router.get("/", auth.optional, function(req, res, next) {
   if (typeof req.query.tag !== "undefined") {
     query.tagList = { $in: [req.query.tag] };
   }
-
+  
+  if(typeof req.query.st !== "undefined") {
+    query.title = { $regex: req.query.st, $options: "i" };
+  }
+  
   Promise.all([
     req.query.seller ? User.findOne({ username: req.query.seller }) : null,
     req.query.favorited ? User.findOne({ username: req.query.favorited }) : null
