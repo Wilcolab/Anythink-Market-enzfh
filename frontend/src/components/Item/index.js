@@ -38,7 +38,7 @@ class Item extends React.Component {
       return null;
     }
 
-    const placeHolderImagePath = '/placeholder.png';
+    const placeHolderImagePath = "/placeholder.png";
 
     const markup = {
       __html: marked(this.props.item.description, { sanitize: true }),
