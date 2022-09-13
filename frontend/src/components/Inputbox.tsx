@@ -21,7 +21,7 @@ function Inputbox(prop: Prop) {
     }
     if (prop.onChange) prop.onChange(e);
   }
-  
+
   function onInput(e: ChangeEvent<HTMLInputElement>) {
     if (prop.onInput) prop.onInput(e);
   }

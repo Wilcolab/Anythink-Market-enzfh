@@ -9,33 +9,35 @@ const ItemList = (props) => {
   if (!props.items) {
     return <div className="py-4">Loading...</div>;
   }
-  
+
   function NoItemCard() {
     const { searchInput } = props.itemList;
     const text = `No items found for "${searchInput || ""}"`;
     return (
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          background: 'rgb(204 204 204 / 30%)',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "rgb(204 204 204 / 30%)",
         }}
       >
-        <span 
+        <span
           className="material-symbols-outlined"
           style={{
-            fontSize: '3em',
-            marginTop: '0.5em',
+            fontSize: "3em",
+            marginTop: "0.5em",
           }}
-        >sentiment_dissatisfied</span>
+        >
+          sentiment_dissatisfied
+        </span>
         <div className="py-4 no-items">{text}</div>
       </div>
     );
   }
 
   if (props.items.length === 0) {
-    return <NoItemCard />
+    return <NoItemCard />;
   }
 
   return (

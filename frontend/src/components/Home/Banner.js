@@ -24,14 +24,14 @@ const Banner = () => {
       </span>
     );
   }
-  
+
   function onInput(e) {
     const { value } = e.target;
-    if(!value) return;
+    if (!value) return;
     store.dispatch({
       type: UPDATE_SEARCH_INPUT,
       payload: value,
-    })
+    });
   }
 
   return (
