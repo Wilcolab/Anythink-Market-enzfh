@@ -15,6 +15,7 @@ const ItemList = (props) => {
     const text = `No items found for "${searchInput || ""}"`;
     return (
       <div
+        id="empty"
         style={{
           display: "flex",
           flexDirection: "column",
