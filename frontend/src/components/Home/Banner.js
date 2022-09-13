@@ -29,31 +29,35 @@ const Banner = () => {
   }
 
   async function clearTitleFilter() {
+    debouncedClearTitleFilter.cancel();
     const items = await agent.Items.all();
     store.dispatch({
       type: CLEAR_TITLE_FILTER,
       payload: items,
     });
   }
+  const debouncedClearTitleFilter = debounce(clearTitleFilter, 0);
 
   async function onInput(e) {
     const { value } = e.target;
-    if (value.length < threshold) return await clearTitleFilter();
+    if (value.length < threshold) return await debouncedClearTitleFilter();
+    debouncedClearTitleFilter.cancel();
     store.dispatch({
       type: UPDATE_SEARCH_INPUT,
       payload: value,
     });
   }
-  const debouncedOnInput = debounce(onInput, 200);
+  const debouncedOnInput = debounce(onInput, 150);
 
   async function onChange(e) {
+    debouncedClearTitleFilter.cancel();
     const items = await agent.Items.searchByTitle(e.target.value);
     store.dispatch({
       type: APPLY_TITLE_FILDER,
       payload: items,
     });
   }
-  const debouncedOnChange = debounce(onChange, 200);
+  const debouncedOnChange = debounce(onChange, 0);
 
   return (
     <div className="banner text-white">
