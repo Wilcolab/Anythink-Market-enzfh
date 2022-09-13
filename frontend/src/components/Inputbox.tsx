@@ -5,6 +5,7 @@ interface Prop {
   placeholder?: string;
   inputThreshold?: number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onInput?: (e: ChangeEvent<HTMLInputElement>) => void;
   onBeforeThreshold?: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   style?: CSSProperties;
@@ -20,6 +21,10 @@ function Inputbox(prop: Prop) {
     }
     if (prop.onChange) prop.onChange(e);
   }
+  
+  function onInput(e: ChangeEvent<HTMLInputElement>) {
+    if (prop.onInput) prop.onInput(e);
+  }
 
   return (
     <span style={prop.style}>
@@ -28,7 +33,8 @@ function Inputbox(prop: Prop) {
         placeholder={prop.placeholder}
         className={prop.className}
         style={prop.inputBoxStyle}
-        onChange={(e) => onChange(e)}
+        onChange={onChange}
+        onInput={onInput}
       />
       {prop.icon ? prop.icon() : null}
     </span>
