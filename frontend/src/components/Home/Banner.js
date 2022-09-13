@@ -6,6 +6,7 @@ import { store } from "../../store";
 import {
   APPLY_TITLE_FILDER,
   CLEAR_TITLE_FILTER,
+  UPDATE_SEARCH_INPUT,
 } from "../../constants/actionTypes";
 
 const Banner = () => {
@@ -22,6 +23,15 @@ const Banner = () => {
         search
       </span>
     );
+  }
+  
+  function onInput(e) {
+    const { value } = e.target;
+    if(!value) return;
+    store.dispatch({
+      type: UPDATE_SEARCH_INPUT,
+      payload: value,
+    })
   }
 
   return (
@@ -58,6 +68,7 @@ const Banner = () => {
                 payload: items,
               });
             }}
+            onInput={onInput}
             onChange={async (e) => {
               const items = await agent.Items.searchByTitle(e.target.value);
               store.dispatch({
