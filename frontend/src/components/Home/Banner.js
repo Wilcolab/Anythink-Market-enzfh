@@ -8,6 +8,7 @@ import {
   CLEAR_TITLE_FILTER,
   UPDATE_SEARCH_INPUT,
 } from "../../constants/actionTypes";
+import { debounce } from 'lodash';
 
 const Banner = () => {
   function SearchIcon() {
@@ -33,6 +34,25 @@ const Banner = () => {
       payload: value,
     });
   }
+  const debouncedOnInput = debounce(onInput, 500);
+  
+  async function onBeforeThrottle() {
+    const items = await agent.Items.all();
+    store.dispatch({
+      type: CLEAR_TITLE_FILTER,
+      payload: items,
+    });
+  }
+  const debouncedOnBeforeThrottle = debounce(onBeforeThrottle, 500);
+  
+  async function onChange(e) {
+    const items = await agent.Items.searchByTitle(e.target.value);
+    store.dispatch({
+      type: APPLY_TITLE_FILDER,
+      payload: items,
+    });
+  }
+  const debouncedOnChange = debounce(onChange, 500);
 
   return (
     <div className="banner text-white">
@@ -61,21 +81,9 @@ const Banner = () => {
               background: "white",
             }}
             inputThreshold={3}
-            onBeforeThreshold={async () => {
-              const items = await agent.Items.all();
-              store.dispatch({
-                type: CLEAR_TITLE_FILTER,
-                payload: items,
-              });
-            }}
-            onInput={onInput}
-            onChange={async (e) => {
-              const items = await agent.Items.searchByTitle(e.target.value);
-              store.dispatch({
-                type: APPLY_TITLE_FILDER,
-                payload: items,
-              });
-            }}
+            onBeforeThreshold={debouncedOnBeforeThrottle}
+            onInput={debouncedOnInput}
+            onChange={debouncedOnChange}
             icon={SearchIcon}
           />
           <span> the cool stuff.</span>
