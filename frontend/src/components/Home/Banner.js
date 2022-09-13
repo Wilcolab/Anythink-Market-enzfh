@@ -1,6 +1,9 @@
 import React from "react";
 import logo from "../../imgs/logo.png";
 import Inputbox from '../Inputbox.tsx';
+import agent from '../../agent';
+import { store } from '../../store';
+import { APPLY_TITLE_FILDER, CLEAR_TITLE_FILTER } from '../../constants/actionTypes';
 
 const Banner = () => {
   
@@ -12,7 +15,7 @@ const Banner = () => {
           color: '#af93f2',
           position: 'relative',
         }}
-        class="material-symbols-outlined"
+        className="material-symbols-outlined"
       >search</span>
     );
   }  
@@ -44,8 +47,19 @@ const Banner = () => {
               background: 'white',
             }}
             inputThreshold={3}
-            onChange={() => {
-              console.log('hello')
+            onBeforeThreshold={async () => {
+              const items = await agent.Items.all();
+              store.dispatch({
+                type: CLEAR_TITLE_FILTER,
+                payload: items,
+              });
+            }}
+            onChange={async (e) => {
+              const items = await agent.Items.searchByTitle(e.target.value)
+              store.dispatch({
+                type: APPLY_TITLE_FILDER,
+                payload: items,
+              });
             }}
             icon={SearchIcon}
           />
