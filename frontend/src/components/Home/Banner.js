@@ -8,7 +8,7 @@ import {
   CLEAR_TITLE_FILTER,
   UPDATE_SEARCH_INPUT,
 } from "../../constants/actionTypes";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 
 const Banner = () => {
   function SearchIcon() {
@@ -35,7 +35,7 @@ const Banner = () => {
     });
   }
   const debouncedOnInput = debounce(onInput, 500);
-  
+
   async function onBeforeThrottle() {
     const items = await agent.Items.all();
     store.dispatch({
@@ -44,7 +44,7 @@ const Banner = () => {
     });
   }
   const debouncedOnBeforeThrottle = debounce(onBeforeThrottle, 500);
-  
+
   async function onChange(e) {
     const items = await agent.Items.searchByTitle(e.target.value);
     store.dispatch({
