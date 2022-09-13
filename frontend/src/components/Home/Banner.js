@@ -44,7 +44,7 @@ const Banner = () => {
       payload: value,
     });
   }
-  const debouncedOnInput = debounce(onInput, 500);
+  const debouncedOnInput = debounce(onInput, 200);
 
   async function onChange(e) {
     const items = await agent.Items.searchByTitle(e.target.value);
@@ -53,7 +53,7 @@ const Banner = () => {
       payload: items,
     });
   }
-  const debouncedOnChange = debounce(onChange, 500);
+  const debouncedOnChange = debounce(onChange, 200);
 
   return (
     <div className="banner text-white">
