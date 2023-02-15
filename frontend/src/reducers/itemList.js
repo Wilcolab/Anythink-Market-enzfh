@@ -12,6 +12,7 @@ import {
   PROFILE_FAVORITES_PAGE_UNLOADED,
   APPLY_TITLE_FILDER,
   CLEAR_TITLE_FILTER,
+  UPDATE_SEARCH_INPUT,
 } from "../constants/actionTypes";
 
 const reducer = (state = {}, action) => {
@@ -102,6 +103,11 @@ const reducer = (state = {}, action) => {
     case PROFILE_PAGE_UNLOADED:
     case PROFILE_FAVORITES_PAGE_UNLOADED:
       return {};
+    case UPDATE_SEARCH_INPUT:
+      return {
+        ...state,
+        searchInput: action.payload,
+      };
     default:
       return state;
   }

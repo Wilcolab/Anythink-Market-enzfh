@@ -6,9 +6,13 @@ import { store } from "../../store";
 import {
   APPLY_TITLE_FILDER,
   CLEAR_TITLE_FILTER,
+  UPDATE_SEARCH_INPUT,
 } from "../../constants/actionTypes";
+import { debounce } from "lodash";
 
 const Banner = () => {
+  const threshold = 3;
+
   function SearchIcon() {
     return (
       <span
@@ -23,6 +27,37 @@ const Banner = () => {
       </span>
     );
   }
+
+  async function clearTitleFilter() {
+    // debouncedClearTitleFilter.cancel();
+    const items = await agent.Items.all();
+    store.dispatch({
+      type: CLEAR_TITLE_FILTER,
+      payload: items,
+    });
+  }
+  // const debouncedClearTitleFilter = debounce(clearTitleFilter, 0);
+
+  async function onInput(e) {
+    const { value } = e.target;
+    if (value.length < threshold) return await clearTitleFilter();
+    // debouncedClearTitleFilter.cancel();
+    store.dispatch({
+      type: UPDATE_SEARCH_INPUT,
+      payload: value,
+    });
+  }
+  const debouncedOnInput = debounce(onInput, 150);
+
+  async function onChange(e) {
+    // debouncedClearTitleFilter.cancel();
+    const items = await agent.Items.searchByTitle(e.target.value);
+    store.dispatch({
+      type: APPLY_TITLE_FILDER,
+      payload: items,
+    });
+  }
+  // const debouncedOnChange = debounce(onChange, 0);
 
   return (
     <div className="banner text-white">
@@ -50,21 +85,9 @@ const Banner = () => {
               width: "20em",
               background: "white",
             }}
-            inputThreshold={3}
-            onBeforeThreshold={async () => {
-              const items = await agent.Items.all();
-              store.dispatch({
-                type: CLEAR_TITLE_FILTER,
-                payload: items,
-              });
-            }}
-            onChange={async (e) => {
-              const items = await agent.Items.searchByTitle(e.target.value);
-              store.dispatch({
-                type: APPLY_TITLE_FILDER,
-                payload: items,
-              });
-            }}
+            inputThreshold={threshold}
+            onInput={debouncedOnInput}
+            onChange={onChange}
             icon={SearchIcon}
           />
           <span> the cool stuff.</span>
