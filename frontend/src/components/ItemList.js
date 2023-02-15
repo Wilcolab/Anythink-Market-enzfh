@@ -12,7 +12,7 @@ const ItemList = (props) => {
 
   function NoItemCard() {
     const { searchInput } = props.itemList;
-    const text = `No items found for "${searchInput || ""}"`;
+    const text = `No where items found for "${searchInput || ""}"`;
     return (
       <div
         id="empty"
